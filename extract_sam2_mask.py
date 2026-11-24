@@ -68,6 +68,7 @@ if __name__ == '__main__':
         mask_generator = SamAutomaticMaskGenerator(
             model=sam,
             points_per_side=32,
+            points_per_batch=16,  # default 64; smaller batch keeps peak VRAM under 6 GB (same masks, less spill)
             pred_iou_thresh=0.88, #Playground 0.85, others 0.88
             box_nms_thresh=0.7,
             stability_score_thresh=0.95,#Playground 0.9, others 0.95
@@ -132,6 +133,8 @@ if __name__ == '__main__':
         # if count % 5 == 0:
 
         name = path.split('.')[0]
+        if os.path.exists(os.path.join(OUTPUT_DIR, name + '.pt')):
+            continue  # resume: mask already extracted
         img = cv2.imread(os.path.join(IMAGE_DIR, path))
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if downsample_manually:

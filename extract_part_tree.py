@@ -32,7 +32,7 @@ random.seed(42)
 np.random.seed(42)
 torch.manual_seed(42)   
 FEATURE_DIM = 32
-FEATURE_GAUSSIAN_ITERATION = 10000
+FEATURE_GAUSSIAN_ITERATION = int(os.environ.get("FEATURE_ITER", 10000))
 
 def get_quantile_func(scales: torch.Tensor, distribution="normal"):
     """

@@ -520,6 +520,11 @@ class FireSolver:
         return w >= 0.5 * self.resz and not self.is_boundary(u, v, w)
 
     @ti.func
+    def inside_fire_my_scene(self, u, v, w) -> bool:
+        # Custom scene: ignite the -x half of the grid; flames then spread through the wood by conduction (beta).
+        return u < 0.5 * self.resx and not self.is_boundary(u, v, w)
+
+    @ti.func
     def inside_fire_playground(self, u, v, w) -> bool:
         norm_u = u / self.resx
         norm_v = v / self.resy
@@ -719,6 +724,9 @@ class FireSolver:
         elif self.scene == "playground":
             for i, j, k in self.wood_temperature:
                 self.wood_temperature[i, j, k] = self.T_max_wood if self.inside_fire_playground(i, j, k) else self.T_air_wood
+        elif self.scene == "my_scene":
+            for i, j, k in self.wood_temperature:
+                self.wood_temperature[i, j, k] = self.T_max_wood if self.inside_fire_my_scene(i, j, k) else self.T_air_wood
         else:
             print("Unknown scene: ", self.scene)
         

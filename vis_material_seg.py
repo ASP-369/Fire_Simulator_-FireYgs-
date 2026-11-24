@@ -245,7 +245,7 @@ def update_args_with_yaml(args, yaml_config):
 
 
 FEATURE_DIM = 32
-FEATURE_GAUSSIAN_ITERATION = 10000
+FEATURE_GAUSSIAN_ITERATION = int(os.environ.get("FEATURE_ITER", 10000))
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Testing script parameters")

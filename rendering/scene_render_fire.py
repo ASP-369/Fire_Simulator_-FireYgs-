@@ -244,7 +244,8 @@ def render_sets(dataset : ModelParams, iteration : int, pipeline : PipelineParam
                 noise_value = noise.pnoise1(x, octaves=3, persistence=0.5, lacunarity=2.0, repeat=1024, base=0)
                 perturbation_sequence.append(amplitude * noise_value)
 
-        for frame_idx in tqdm(range(frame_start, frame_end)):
+        # Optional: render every Nth simulated frame (config key `render_stride`, default 1 = all frames).
+        for frame_idx in tqdm(range(frame_start, frame_end, int(getattr(args, 'render_stride', 1)))):
             if args.render_single:
                 frame_idx = args.render_frame
 
